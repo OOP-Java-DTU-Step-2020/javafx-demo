@@ -29,6 +29,7 @@ public class App extends Application {
         Scene scene = new Scene(new StackPane(logoView), 640, 480);
         stage.setScene(scene);
         stage.setTitle("Simple application in JavaFX");
+        stage.getIcons().add(new Image(getResourceStream("icon.png")));
         stage.show();
     }
 
