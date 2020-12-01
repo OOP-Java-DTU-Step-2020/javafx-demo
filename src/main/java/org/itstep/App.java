@@ -10,7 +10,13 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class App extends Application {
 
@@ -18,7 +24,7 @@ public class App extends Application {
     public void start(Stage stage) {
         ImageView logoView = new ImageView();
 
-        Image image = new Image(getResourceStream("itstep-logo.png"));
+        Image image = new Image(pathToCard("itstep-logo.png"));
 
         logoView.setImage(image);
         logoView.setPreserveRatio(true);
@@ -29,8 +35,14 @@ public class App extends Application {
         Scene scene = new Scene(new StackPane(logoView), 640, 480);
         stage.setScene(scene);
         stage.setTitle("Simple application in JavaFX");
-        stage.getIcons().add(new Image(getResourceStream("icon.png")));
+        stage.getIcons().add(new Image("icon.png"));
         stage.show();
+    }
+
+    private String pathToCard(String cardFilename) {
+        if(cardFilename == null) return null;
+        String[] parts = cardFilename.split("/");
+        return App.class.getClassLoader().getResource(parts[0]) + (parts.length == 2 ? parts[1] : "");
     }
 
     private void playAnimation(ImageView logoView) {
@@ -64,11 +76,7 @@ public class App extends Application {
         fadeTransition.play();
     }
 
-    private InputStream getResourceStream(String filename) {
-        return App.class.getClassLoader().getResourceAsStream(filename);
-    }
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
         launch();
     }
 
